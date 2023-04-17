@@ -9,3 +9,9 @@
 **问题：**前端找元素的时候，有些元素鼠标一离开就消失了，无法定位到元素
 
 **解答：**可以在控制台中使用setTimeout(()=>{debugger}, 3000)  debugger 页面静止 就能定位到该元素
+
+#### 弹出框body也滚动
+
+**问题：** h5端弹出框弹出后 fixed之后， body如果过长还可以滚动
+
+**解答：**弹出弹框后 document.body.style.overflow = 'hidden' 如果还不行可以让 body fixed; 关闭弹框后恢复
