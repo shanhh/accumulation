@@ -15,3 +15,34 @@
 **问题：** h5端弹出框弹出后 fixed之后， body如果过长还可以滚动
 
 **解答：**弹出弹框后 document.body.style.overflow = 'hidden' 如果还不行可以让 body fixed; 关闭弹框后恢复
+
+#### 小程序未登录加车，登录后用sessionId自动加车
+
+**问题：**h5端未登录加车，登录后用sessionId自动加车，浏览器自带事件，小程序端如何做
+
+**解答：**小程序端就像取cookie一样,代码如下
+
+```javascript
+// 在封装请求 返回中取
+res.cookies.forEach((row) => {
+   if (row && row.indexOf('/frontier-trade-web') > -1) {
+     //存/frontier-trade-web
+     const JSESSIONID = row.match(`[;\s+]?${'JSESSIONID'}=([^;]*)`)?.pop()
+     if (JSESSIONID) {
+       minCache.set('JSESSIONID', JSESSIONID)
+     }
+   }
+ })
+// 给封装请求中给
+if (minCache.get('JSESSIONID')) {
+  // 后端sessionId
+  //#ifndef H5
+  if (request.header.cookie) {
+    request.header.cookie += `;JSESSIONID=${minCache.get('JSESSIONID')}`
+  } else {
+    request.header.cookie = `JSESSIONID=${minCache.get('JSESSIONID')}`
+  }
+  //#endif
+}
+```
+
